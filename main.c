@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <time.h>
 
 void pause_program();
 void input_program(int *);
-void random(int, int *);
-void out(int, int *);
+void random_arr(int, int *);
+// void out(int, int *);
 
 int main(int argc, char* argv[])
 {
@@ -25,11 +27,11 @@ int main(int argc, char* argv[])
 
         default:
             {
-                //printf("Please input number of pages: ");
+                printf("Please input number of pages: ");
                 scanf("%d", &numberOfPages);
-                //random(numberOfPages, arr);
+                random_arr(numberOfPages, arr);
             }
-        //out(numberOfPages, arr);
+        // out(numberOfPages, arr);
         return 0;
     }
 }
@@ -45,7 +47,7 @@ void input_program(int *input)
 {
     do
     {
-        system("clear");
+        //system("clear");
         printf("--- Page Replacement algorithm ---\n");
         printf("1. Default referenced sequence\n");
         printf("2. Manual input sequence\n");
@@ -61,7 +63,7 @@ void input_program(int *input)
 
 }
 
-void random(int numberOfPages, int *arr)
+void random_arr(int numberOfPages, int *arr)
 {
     srand(time(NULL));
     for (int i = 0; i < numberOfPages; i++)
@@ -70,10 +72,10 @@ void random(int numberOfPages, int *arr)
     }
 }
 
-void out(int numberOfPages, int *arr)
-{
-    for (int i = 0; i < numberOfPages; i++)
-    {
-        printf("%d\t",arr[i]);
-    }
-}
+// void out(int numberOfPages, int *arr)
+// {
+//     for (int i = 0; i < numberOfPages; i++)
+//     {
+//         printf("%d\t",arr[i]);
+//     }
+// }
