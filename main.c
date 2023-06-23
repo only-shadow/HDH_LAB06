@@ -4,24 +4,33 @@
 
 void pause_program();
 void input_program(int *);
+void random(int, int *);
+void out(int, int *);
 
 int main(int argc, char* argv[])
 {
-    int input;
+    int input, numberOfPages;
+    int arr[100];
     input_program(&input);
-    printf("%d", input);
-    
+
     switch(input)
     {
         case 1:
             {
+                numberOfPages = 11;
+                int default_arr[] = {2, 1, 5, 2, 1, 2, 6, 0, 0, 0, 7};
+                memcpy(arr, default_arr, sizeof(default_arr));
                 break;
             }
 
-        case 2:
+        default:
             {
-                break;
+                //printf("Please input number of pages: ");
+                scanf("%d", &numberOfPages);
+                //random(numberOfPages, arr);
             }
+        //out(numberOfPages, arr);
+        return 0;
     }
 }
 
@@ -50,4 +59,21 @@ void input_program(int *input)
         }
     } while (*input < 1 || *input > 2);
 
+}
+
+void random(int numberOfPages, int *arr)
+{
+    srand(time(NULL));
+    for (int i = 0; i < numberOfPages; i++)
+    {
+        arr[i] = rand() % 10;
+    }
+}
+
+void out(int numberOfPages, int *arr)
+{
+    for (int i = 0; i < numberOfPages; i++)
+    {
+        printf("%d\t",arr[i]);
+    }
 }
