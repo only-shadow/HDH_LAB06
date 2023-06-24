@@ -15,7 +15,7 @@ void input_pageframe(int *);
 void choose_algorithm(int *);
 void init_matrix(int, int, char(*)[*]);
 void out_matrix(int, int, char (*)[*]);
-int run_algorithm(int, int, int, char *, char (*)[*]);
+int mark_page_fault(int, int, int, char *, char (*)[*]);
 
 int main(int argc, char* argv[])
 {
@@ -152,7 +152,7 @@ void out_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
     }
 }
 
-int run_algorithm(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
+int mark_page_fault(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
 {
     int x = MIN(numberOfPages, pageFrames);
     for (int i = 0; i < x; i++)
@@ -168,6 +168,5 @@ int run_algorithm(int numberOfPages, int pageFrames, int pageErrors, char *arr, 
         {
             arr2[j][i] = arr2[j][i-1];
         }
-
     }
 }
