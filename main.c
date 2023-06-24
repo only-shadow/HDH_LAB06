@@ -17,6 +17,7 @@ void init_matrix(int so_phan_tu, int so_frame, char(*mang_thay_trang)[*]);
 void out_matrix(int so_phan_tu, int so_frame, char (*mang_thay_trang)[*]);
 int mark_page_fault(int so_phan_tu, int so_frame, int *so_loi_trang, int chon_giai_thuat, char *mang_input, char (*mang_thay_trang)[*]);
 void change_page(int so_phan_tu, int so_frame, char trang_thay_vao, char (*mang_thay_trang)[], int cot_thay, int *hang_thay, void (*giai_thuat)(int));
+void output(int so_phan_tu, int so_frame, int so_loi_trang, char *mang_input, char (*mang_thay_trang)[*]);
 
 int main(int argc, char* argv[])
 {
@@ -49,6 +50,9 @@ int main(int argc, char* argv[])
     choose_algorithm(&choose);
     
     init_matrix(pageFrames, numberOfPages, arr2);
+    mark_page_fault(numberOfPages, pageFrames, &pageErrors, choose, arr, arr2);
+
+    output(numberOfPages, pageFrames, pageErrors, arr, arr2);
 
     return 0;
 }
@@ -95,6 +99,7 @@ void out_arr(int numberOfPages, char *arr)
     {
         printf("%d\t",arr[i]);
     }
+    printf("\n");
 }
 
 void input_pageframe(int *pageframes)
@@ -137,9 +142,12 @@ void choose_algorithm(int *choose)
 void init_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
 {
     for (int i = 0; i < numberOfPages; i++)
-    for (int j = 0; j < pageFrames + 1; j++)
     {
-        arr[j][i] = ' ';
+        for (int j = 0; j < pageFrames + 1; j++)
+        {
+            arr[j][i] = ' ';
+        }
+        printf("\n");
     }
 }
 
@@ -206,6 +214,7 @@ int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choo
             break;
         }
         }
+        pageErrors++;
     }
 }
 
@@ -221,4 +230,11 @@ void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numbe
         }
         arr2[i][pos_column] = arr2[i][pos_column - 1];
     }
+}
+
+void output(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
+{
+    out_arr(numberOfPages, arr);
+    out_matrix(numberOfPages, pageFrames, arr2);
+    printf("Number of Page Fault: %d", pageErrors);
 }
