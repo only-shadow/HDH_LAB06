@@ -5,6 +5,8 @@
 #include <time.h>
 #include "FIFO.h"
 
+#define MIN(x, y) ((x) < (y) ? (x) : (y))
+
 void pause_program();
 void input_program(int *);
 void random_arr(int, char *);
@@ -13,6 +15,7 @@ void input_pageframe(int *);
 void choose_algorithm(int *);
 void init_matrix(int, int, char(*)[*]);
 void out_matrix(int, int, char (*)[*]);
+int run_algorithm(int, int, int, char *, char (*)[*]);
 
 int main(int argc, char* argv[])
 {
@@ -146,5 +149,25 @@ void out_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
     for (int j = 0; j < pageFrames + 1; j++)
     {
         printf("%d\t", arr[j][i]);
+    }
+}
+
+int run_algorithm(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
+{
+    int x = MIN(numberOfPages, pageFrames);
+    for (int i = 0; i < x; i++)
+    for (int j = 0; j < x; j++)
+    {
+        if(i == j)
+        {
+            arr2[i][i] = arr[i];
+            arr2[pageFrames + 1][i] = '*';
+            pageErrors++;
+        }
+        if(j < i)
+        {
+            arr2[j][i] = arr2[j][i-1];
+        }
+
     }
 }
