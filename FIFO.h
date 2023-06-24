@@ -1,1 +1,1 @@
-int FIFO(int numberOfPages, int pageFrames, char *arr, char (*arr2)[numberOfPages]);
+int FIFO(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages]);

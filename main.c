@@ -21,12 +21,14 @@ int main(int argc, char* argv[])
     char arr2[100][100];
     input_program(&input);
 
+    pageErrors = 0;
+
     switch(input)
     {
         case 1:
             {
                 numberOfPages = 11;
-                char default_arr[] = {'2', '1', '5', '2', '1', '2', '6', '0', '0', '0', '7'};
+                char default_arr[] = {2, 1, 5, 2, 1 ,2, 6, 0, 0, 0, 7};
                 memcpy(arr, default_arr, sizeof(default_arr));
                 break;
             }
@@ -42,7 +44,6 @@ int main(int argc, char* argv[])
 
     input_pageframe(&pageFrames);
     choose_algorithm(&choose);
-    
     
     init_matrix(pageFrames, numberOfPages, arr2);
 
@@ -135,7 +136,7 @@ void init_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
     for (int i = 0; i < numberOfPages; i++)
     for (int j = 0; j < pageFrames + 1; j++)
     {
-        arr[j][i] = 2;
+        arr[j][i] = ' ';
     }
 }
 
