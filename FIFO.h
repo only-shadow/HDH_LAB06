@@ -1,1 +1,1 @@
-void change_pos(int *, int)
+void change_pos(int *, int);

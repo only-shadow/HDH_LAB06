@@ -3,9 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-#include "FIFO.h"
+// #include "FIFO.h"
 
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
+#define RESET "\x1B[0m"
+#define BOLD "\x1B[1m" 
 
 void pause_program();
 void input_program(int *nhap_hoac_random_input);
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
     choose_algorithm(&choose);
     
     init_matrix(pageFrames, numberOfPages, arr2);
-    mark_page_fault(numberOfPages, pageFrames, &pageErrors, choose, arr, arr2);
+    // mark_page_fault(numberOfPages, pageFrames, &pageErrors, choose, arr, arr2);
 
     output(numberOfPages, pageFrames, pageErrors, arr, arr2);
 
@@ -69,7 +71,7 @@ void input_program(int *input)
     do
     {
         //system("clear");
-        printf("--- Page Replacement algorithm ---\n");
+        printf("%s--- Page Replacement algorithm ---%s\n",BOLD,RESET);
         printf("1. Default referenced sequence\n");
         printf("2. Manual input sequence\n");
         printf("You choose: ");
@@ -107,7 +109,7 @@ void input_pageframe(int *pageframes)
     do
     {
         //system("clear");
-        printf("--- Page Replacement algorithm ---\n");
+        printf("%s--- Page Replacement algorithm ---%s\n",BOLD,RESET);
         printf("Input page frames: ");
         scanf(" %d", pageframes);
 
@@ -124,7 +126,7 @@ void choose_algorithm(int *choose)
     do
     {
         //system("clear");
-        printf("--- Page Replacement algorithm ---\n");
+        printf("%s--- Page Replacement algorithm ---%s\n",BOLD,RESET);
         printf("1. FIFO algorithm\n");
         printf("2. OPT algorithm\n");
         printf("3. LRU algorithm\n");
@@ -153,70 +155,73 @@ void init_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
 
 void out_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
 {
-    for (int i = 0; i < numberOfPages; i++)
-    for (int j = 0; j < pageFrames + 1; j++)
+    for (int i = 0; i < pageFrames + 1; i++)
     {
-        printf("%d\t", arr[j][i]);
+        for (int j = 0; j < numberOfPages; j++)
+        {
+            printf("%d\t", arr[i][j]);
+        }
+        printf("\n");
     }
 }
 
-int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choose, char *arr, char (*arr2)[numberOfPages])
-{
-    int x = MIN(numberOfPages, pageFrames);
-    for (int i = 0; i < x; i++)
-    for (int j = 0; j < x; j++)
-    {
-        if(i == j)
-        {
-            arr2[i][i] = arr[i];
-            arr2[pageFrames + 1][i] = '*';
-            *pageErrors++;
-        }
-        if(j < i)
-        {
-            arr2[j][i] = arr2[j][i-1];
-        }
-    }
-
-    int pos = -1;
-    int do_change = 1;
-    for (int i = x; i < numberOfPages; i++)
-    {
-        for (int j = 0; j < pageFrames; j++)
-        {
-            
-            if (arr[i] == arr2[j][i])
-                do_change = 0;
-        }
-        if (!do_change)
-        {
-            for (int j = 0; j < pageFrames; j++)
-            {
-                arr2[j][i] = arr2[j][i-1];
-            }
-            do_change = 1;
-            continue;
-        }
-        switch (choose)
-        {
-        case 1:
-        {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, fifo(numberOfPages, pageFrames, arr, arr2, i, &pos));
-            break;
-        }
-        case 2:
-        {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, opt(numberOfPages, pageFrames, arr, arr2, i, &pos));
-        }
-        default:
-        {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, lru(numberOfPages, pageFrames, arr, arr2, i, &pos));
-            break;
-        }
-        }
-        pageErrors++;
-    }
-}
+// int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choose, char *arr, char (*arr2)[numberOfPages])
+// {
+//     int x = MIN(numberOfPages, pageFrames);
+//     for (int i = 0; i < x; i++)
+//     for (int j = 0; j < x; j++)
+//     {
+//         if(i == j)
+//         {
+//             arr2[i][i] = arr[i];
+//             arr2[pageFrames + 1][i] = '*';
+//             *pageErrors++;
+//         }
+//         if(j < i)
+//         {
+//             arr2[j][i] = arr2[j][i-1];
+//         }
+//     }
+//
+//     int pos = -1;
+//     int do_change = 1;
+//     for (int i = x; i < numberOfPages; i++)
+//     {
+//         for (int j = 0; j < pageFrames; j++)
+//         {
+//     
+//             if (arr[i] == arr2[j][i])
+//                 do_change = 0;
+//         }
+//         if (!do_change)
+//         {
+//             for (int j = 0; j < pageFrames; j++)
+//             {
+//                 arr2[j][i] = arr2[j][i-1];
+//             }
+//             do_change = 1;
+//             continue;
+//         }
+//         switch (choose)
+//         {
+//         case 1:
+//         {
+//             change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, fifo(numberOfPages, pageFrames, arr, arr2, i, &pos));
+//             break;
+//         }
+//         case 2:
+//         {
+//             change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, opt(numberOfPages, pageFrames, arr, arr2, i, &pos));
+//         }
+//         default:
+//         {
+//             change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, lru(numberOfPages, pageFrames, arr, arr2, i, &pos));
+//             break;
+//         }
+//         }
+//         pageErrors++;
+//     }
+// }
 
 void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numberOfPages], int pos_column, int *pos_row, void (*algorithm)(int, int, char, char (*)[*], int, int *))
 {
@@ -234,6 +239,8 @@ void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numbe
 
 void output(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
 {
+    //system("clear");
+    printf("%s--- Page Replacement algorithm ---%s\n",BOLD,RESET);
     out_arr(numberOfPages, arr);
     out_matrix(numberOfPages, pageFrames, arr2);
     printf("Number of Page Fault: %d", pageErrors);
