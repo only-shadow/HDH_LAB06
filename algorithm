@@ -1,0 +1,68 @@
+void FIFO(numberOfPages, pageFrames, arr, arr2, pos_column, *pos_row)
+{
+    if(pos_column > 1){
+        int countErrorPage=0;
+        for(int i=0;i<pos_column;i++){
+            if(arr2[i][pageFrames]=='*'){
+                countErrorPage++;
+            }
+        }
+        pos_row=countErrorPage+%3;
+        
+    }
+    return;
+}
+void OPT(numberOfPages, pageFrames, arr, arr2, pos_column,* pos_row)
+{
+    if(pos_column>1)
+    {
+        int check=1;
+        int count[pageFrames]={0};
+        for (int i=0;i<pageFrames;i++){
+            for(int y=pos_column-1 ;y>=0 && check;y--){
+                if(arr[y]!=arr2[i][pos_column]){
+                    count[i]++;
+                }
+                else{
+                    check=0;
+                }
+            }
+            check=1;
+        }
+        int k=count[0];
+        for(int i=1;i<pageFrames;i++){
+            if(count[i]>k){
+                k=count[i];
+                pos_row=i;
+            }
+        }
+    }
+    return;
+}
+void ELU(numberOfPages, pageFrames, arr, arr2, pos_column,* pos_row)
+{
+    if(pos_column>1)
+    {
+        int check=1;
+        int count[pageFrames]={0};
+        for (int i=0;i<pageFrames;i++){
+            for(int y=pos_column+1 ;y<numberOfPages && check;y++){
+                if(arr[y]!=arr2[i][pos_column]){
+                    count[i]++;
+                }
+                else{
+                    check=0;
+                }
+            }
+            check=1;
+        }
+        int k=count[0];
+        for(int i=1;i<pageFrames;i++){
+            if(count[i]>k){
+                k=count[i];
+                pos_row=i;
+            }
+        }
+    }
+    return;
+}
