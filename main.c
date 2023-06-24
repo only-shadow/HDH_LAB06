@@ -16,7 +16,7 @@ void choose_algorithm(int *chon_giai_thuat);
 void init_matrix(int so_phan_tu, int so_frame, char(*mang_thay_trang)[*]);
 void out_matrix(int so_phan_tu, int so_frame, char (*mang_thay_trang)[*]);
 int mark_page_fault(int so_phan_tu, int so_frame, int *so_loi_trang, int chon_giai_thuat, char *mang_input, char (*mang_thay_trang)[*]);
-void change_page(int so_phan_tu, int so_frame, char trang_thay_vao, char (*mang_thay_trang)[], int cot_thay, int *hang_thay, void (*giai_thuat)(int));
+void change_page(int so_phan_tu, int so_frame, char trang_thay_vao, char (*mang_thay_trang)[*], int cot_thay, int *hang_thay, void (*giai_thuat)(int so_phan_tu, int so_frame, char trang_thay_vao, char (*)[*], int cot_thay, int *hang_thay));
 void output(int so_phan_tu, int so_frame, int so_loi_trang, char *mang_input, char (*mang_thay_trang)[*]);
 
 int main(int argc, char* argv[])
@@ -201,16 +201,16 @@ int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choo
         {
         case 1:
         {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, fifo(pos));
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, fifo(numberOfPages, pageFrames, arr, arr2, i, &pos));
             break;
         }
         case 2:
         {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, opt(pos));
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, opt(numberOfPages, pageFrames, arr, arr2, i, &pos));
         }
         default:
         {
-            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, lru(pos));
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, &pos, lru(numberOfPages, pageFrames, arr, arr2, i, &pos));
             break;
         }
         }
@@ -218,9 +218,9 @@ int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choo
     }
 }
 
-void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numberOfPages], int pos_column, int *pos_row, void (*algorithm)(int))
+void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numberOfPages], int pos_column, int *pos_row, void (*algorithm)(int, int, char, char (*)[*], int, int *))
 {
-    algorithm(*pos_row);
+    algorithm(numberOfPages, pageFrames, arr, arr2, pos_column, *pos_row);
     for (int i = 0; i < pageFrames; i++)
     {
         if (i == *pos_row)
