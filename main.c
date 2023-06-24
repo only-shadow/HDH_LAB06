@@ -8,14 +8,14 @@
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 
 void pause_program();
-void input_program(int *);
-void random_arr(int, char *);
-void out(int, char *);
-void input_pageframe(int *);
-void choose_algorithm(int *);
-void init_matrix(int, int, char(*)[*]);
-void out_matrix(int, int, char (*)[*]);
-int mark_page_fault(int, int, int, char *, char (*)[*]);
+void input_program(int *nhap_hoac_random_input);
+void random_arr(int so_phan_tu, char *mang_input);
+void out_arr(int so_phan_tu, char *mang_input);
+void input_pageframe(int *so_frame);
+void choose_algorithm(int *chon_giai_thuat);
+void init_matrix(int so_phan_tu, int so_frame, char(*mang_thay_trang)[*]);
+void out_matrix(int so_phan_tu, int so_frame, char (*mang_thay_trang)[*]);
+int mark_page_fault(int so_phan_tu, int so_frame, int *so_loi_trang, int chon_giai_thuat, char *mang_input, char (*mang_thay_trang)[*]);
 
 int main(int argc, char* argv[])
 {
@@ -42,7 +42,6 @@ int main(int argc, char* argv[])
                 scanf("%d", &numberOfPages);
                 random_arr(numberOfPages, arr);
             }
-        // out(numberOfPages, arr);
     }
 
     input_pageframe(&pageFrames);
@@ -89,7 +88,7 @@ void random_arr(int numberOfPages, char *arr)
     }
 }
 
-void out(int numberOfPages, char *arr)
+void out_arr(int numberOfPages, char *arr)
 {
     for (int i = 0; i < numberOfPages; i++)
     {
@@ -152,7 +151,7 @@ void out_matrix(int numberOfPages, int pageFrames, char (*arr)[numberOfPages])
     }
 }
 
-int mark_page_fault(int numberOfPages, int pageFrames, int pageErrors, char *arr, char (*arr2)[numberOfPages])
+int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choose, char *arr, char (*arr2)[numberOfPages])
 {
     int x = MIN(numberOfPages, pageFrames);
     for (int i = 0; i < x; i++)
@@ -162,11 +161,13 @@ int mark_page_fault(int numberOfPages, int pageFrames, int pageErrors, char *arr
         {
             arr2[i][i] = arr[i];
             arr2[pageFrames + 1][i] = '*';
-            pageErrors++;
+            *pageErrors++;
         }
         if(j < i)
         {
             arr2[j][i] = arr2[j][i-1];
         }
     }
+
+    int pos = -1;
 }
