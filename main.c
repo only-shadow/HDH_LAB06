@@ -16,6 +16,7 @@ void choose_algorithm(int *chon_giai_thuat);
 void init_matrix(int so_phan_tu, int so_frame, char(*mang_thay_trang)[*]);
 void out_matrix(int so_phan_tu, int so_frame, char (*mang_thay_trang)[*]);
 int mark_page_fault(int so_phan_tu, int so_frame, int *so_loi_trang, int chon_giai_thuat, char *mang_input, char (*mang_thay_trang)[*]);
+void change_page(int so_phan_tu, int so_frame, char trang_thay_vao, char (*mang_thay_trang)[], int cot_thay, int *hang_thay, void (*giai_thuat)(int));
 
 int main(int argc, char* argv[])
 {
@@ -170,4 +171,54 @@ int mark_page_fault(int numberOfPages, int pageFrames, int *pageErrors, int choo
     }
 
     int pos = -1;
+    int do_change = 1;
+    for (int i = x; i < numberOfPages; i++)
+    {
+        for (int j = 0; j < pageFrames; j++)
+        {
+            
+            if (arr[i] == arr2[j][i])
+                do_change = 0;
+        }
+        if (!do_change)
+        {
+            for (int j = 0; j < pageFrames; j++)
+            {
+                arr2[j][i] = arr2[j][i-1];
+            }
+            do_change = 1;
+            continue;
+        }
+        switch (choose)
+        {
+        case 1:
+        {
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, fifo(pos));
+            break;
+        }
+        case 2:
+        {
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, opt(pos));
+        }
+        default:
+        {
+            change_page(numberOfPages, pageFrames, arr[i], arr2, i, pos, lru(pos));
+            break;
+        }
+        }
+    }
+}
+
+void change_page(int numberOfPages, int pageFrames, char arr, char (*arr2)[numberOfPages], int pos_column, int *pos_row, void (*algorithm)(int))
+{
+    algorithm(*pos_row);
+    for (int i = 0; i < pageFrames; i++)
+    {
+        if (i == *pos_row)
+        {
+            arr2[i][pos_column] = arr;
+            continue;
+        }
+        arr2[i][pos_column] = arr2[i][pos_column - 1];
+    }
 }
